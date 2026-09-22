@@ -3,8 +3,8 @@ services:
     name: mindbridge-api
     runtime: python
     rootDir: backend
-    buildCommand: python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
-    startCommand: ./venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: cd backend && python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
+    startCommand: cd backend && ./venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0

@@ -60,16 +60,16 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate('/institution')}
-              className="text-sm text-calm-600 hover:text-calm-900 font-medium transition-colors hidden sm:block"
+              onClick={() => navigate('/admin/login')}
+              className="text-sm text-calm-600 hover:text-calm-900 font-medium transition-colors"
             >
-              For Institutions
+              Admin
             </button>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/login')}
               className="btn-primary text-sm py-2 px-4"
             >
-              Sign In
+              Student sign in
             </button>
           </div>
         </div>

@@ -113,12 +113,16 @@ MindBridge/
 ```bash
 cd backend
 pip install -r requirements.txt
+set MINDBRIDGE_ADMIN_EMAIL=admin@example.edu
+set MINDBRIDGE_ADMIN_PASSWORD=replace-with-a-long-password
 uvicorn app.main:app --reload
 ```
 
 Backend runs at: **http://localhost:8000**
 
 API docs available at: **http://localhost:8000/docs**
+
+The admin account is configured on the server and is separate from student sign-up. Set `MINDBRIDGE_ADMIN_EMAIL` and `MINDBRIDGE_ADMIN_PASSWORD` in the Render service environment before using the admin login. Student accounts and appointment requests are stored in SQLite; set `MINDBRIDGE_DB_PATH` to a persistent disk path in deployments where data must survive service replacement (the default Render filesystem is ephemeral).
 
 ### Frontend
 
@@ -142,6 +146,11 @@ Frontend runs at: **http://localhost:5173**
 | POST   | `/api/checkin` | Submit well-being assessment       |
 | POST   | `/api/analyze` | Analyze text + assessment          |
 | GET    | `/api/trends`  | Aggregated anonymized trend data   |
+| POST   | `/api/auth/student/signup` | Create a student account |
+| POST   | `/api/auth/student/login` | Student sign in |
+| POST   | `/api/auth/admin/login` | Separate administrator sign in |
+| POST   | `/api/appointments` | Submit a private counselling appointment request |
+| GET    | `/api/appointments` | Student's own requests or admin request queue |
 
 ### Example: Analyze
 
@@ -193,7 +202,10 @@ POST /api/analyze
 | `/analysis`    | AI Analysis Results      |
 | `/support`     | Support Navigation       |
 | `/progress`    | Well-being Tracking      |
-| `/institution` | Institutional Insights   |
+| `/appointments` | Counselling Appointment Request |
+| `/login`       | Student sign up / sign in |
+| `/admin/login` | Separate administrator sign in |
+| `/institution` | Admin insights and appointment queue |
 
 ---
 
@@ -203,22 +215,24 @@ POST /api/analyze
 - All outputs use language like *"Your responses suggest..."* and *"Possible concern identified..."*
 - The NLP model uses TF-IDF cosine similarity — it is a prototype, not a clinical system
 - The ML support-level model uses weighted scoring — transparent and explainable
-- No authentication is implemented (academic prototype)
-- The frontend works without a running backend using demo fallback data
+- Student and administrator API access uses expiring bearer tokens; student passwords are stored as salted scrypt hashes
+- The admin login requires server-side `MINDBRIDGE_ADMIN_EMAIL` and `MINDBRIDGE_ADMIN_PASSWORD` configuration
+- Appointment requests are stored in the application database and shown to the authorized admin; no email delivery is configured
+- Authentication, check-ins, and appointment requests require a running backend; institutional trend charts retain demo data until refreshed
 
 ---
 
 ## Demo Flow
 
-1. Open **http://localhost:5173**
-2. Click **Start Check-in** → complete the 5-question assessment
+1. Configure the admin credentials and start the backend, then open **http://localhost:5173**
+2. Create a student account or sign in, then click **Start Check-in** → complete the 5-question assessment
 3. On the Express page, type or speak:
    > *"I've been really stressed about my exams and I'm finding it difficult to concentrate."*
 4. Click **Analyze My Response**
 5. View the concern analysis results (requires backend running)
 6. Click **View Support Options** → explore support resources
 7. Check **My Progress** for well-being trends
-8. Visit **/institution** for the institutional dashboard
+8. Use **/appointments** to send an appointment request; sign in at **/admin/login** to review requests in the admin dashboard
 
 ---
 

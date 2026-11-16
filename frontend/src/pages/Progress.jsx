@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts'
 import { TrendingUp, TrendingDown, Minus, Shield } from 'lucide-react'
-import { api } from '../lib/api'
 
 const demoWeekly = [
   { week: 'Week 1', academic_stress: 4.0, wellbeing: 3.1, checkins: 2 },
@@ -19,18 +17,6 @@ function Trend({ val, prev }) {
 }
 
 export default function Progress() {
-  const [trends, setTrends] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    api.getTrends()
-      .then(data => {
-        setTrends(data)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [])
-
   const latest = demoWeekly[demoWeekly.length - 1]
   const prev    = demoWeekly[demoWeekly.length - 2]
 

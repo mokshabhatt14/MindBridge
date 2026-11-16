@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Outlet, NavLink } from 'react-router-dom'
+import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, ClipboardList, MessageSquare, TrendingUp,
-  HeartHandshake, Building2, Menu, X, Settings, Activity
+  HeartHandshake, CalendarClock, Menu, X, Activity, LogOut
 } from 'lucide-react'
+import { useApp } from '../context/AppContext'
 
 const studentNav = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -11,14 +12,17 @@ const studentNav = [
   { to: '/express',   icon: MessageSquare,   label: 'Express Yourself' },
   { to: '/progress',  icon: TrendingUp,      label: 'My Progress' },
   { to: '/support',   icon: HeartHandshake,  label: 'Support' },
-]
-
-const institutionNav = [
-  { to: '/institution', icon: Building2, label: 'Insights' },
+  { to: '/appointments', icon: CalendarClock, label: 'Appointments' },
 ]
 
 export default function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { state, signOut } = useApp()
+  const navigate = useNavigate()
+  const handleSignOut = () => {
+    signOut()
+    navigate('/login', { replace: true })
+  }
   const NavItem = ({ item }) => (
     <NavLink
       to={item.to}
@@ -55,21 +59,21 @@ export default function AppLayout() {
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         <p className="text-xs font-semibold text-calm-400 uppercase tracking-wider px-3 mb-2">Student</p>
         {studentNav.map(item => <NavItem key={item.to} item={item} />)}
-        <div className="pt-4">
-          <p className="text-xs font-semibold text-calm-400 uppercase tracking-wider px-3 mb-2">Institution</p>
-          {institutionNav.map(item => <NavItem key={item.to} item={item} />)}
-        </div>
       </nav>
 
       {/* Footer */}
       <div className="px-3 py-4 border-t border-calm-100">
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-calm-100 cursor-pointer transition-colors">
-          <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-semibold text-xs">S</div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-calm-900 truncate">Student</p>
-            <p className="text-xs text-calm-500 truncate">Demo Account</p>
+        <div className="flex items-center gap-3 px-3 py-2.5">
+          <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-semibold text-xs">
+            {state.session?.user?.name?.slice(0, 1)?.toUpperCase() || 'S'}
           </div>
-          <Settings size={14} className="text-calm-400" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-calm-900 truncate">{state.session?.user?.name || 'Student'}</p>
+            <p className="text-xs text-calm-500 truncate">{state.session?.user?.email}</p>
+          </div>
+          <button onClick={handleSignOut} title="Sign out" className="text-calm-400 hover:text-calm-700">
+            <LogOut size={15} />
+          </button>
         </div>
         <p className="text-[10px] text-calm-400 px-3 pt-2 leading-relaxed">
           Support navigation only. Not a diagnosis tool.

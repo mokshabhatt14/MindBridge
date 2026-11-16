@@ -117,8 +117,11 @@ export default function Support() {
               ))}
             </div>
 
-            <button className="btn-primary w-full justify-center text-sm py-2">
-              {cat.action} <ArrowRight size={14} />
+            <button
+              onClick={cat.id === 'professional' ? () => navigate('/appointments') : undefined}
+              className="btn-primary w-full justify-center text-sm py-2"
+            >
+              {cat.id === 'professional' ? 'Request an appointment' : cat.action} <ArrowRight size={14} />
             </button>
           </div>
         ))}

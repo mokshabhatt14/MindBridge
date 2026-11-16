@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line, XAxis, YAxis, CartesianGrid
@@ -30,14 +30,26 @@ const demoTrends = {
 export default function Institution() {
   const [data, setData] = useState(demoTrends)
   const [loading, setLoading] = useState(false)
+  const [appointments, setAppointments] = useState([])
+  const [error, setError] = useState('')
 
   const refresh = () => {
     setLoading(true)
-    api.getTrends()
-      .then(d => setData(d))
-      .catch(() => {})
+    setError('')
+    Promise.all([api.getTrends(), api.getAppointments()])
+      .then(([trends, requests]) => {
+        setData(trends)
+        setAppointments(requests.appointments)
+      })
+      .catch(requestError => setError(requestError.message || 'Unable to load administrator data.'))
       .finally(() => setLoading(false))
   }
+
+  useEffect(() => {
+    api.getAppointments()
+      .then(result => setAppointments(result.appointments))
+      .catch(requestError => setError(requestError.message || 'Unable to load appointment requests.'))
+  }, [])
 
   const stats = [
     { label: 'Total Check-ins',        value: data.total_checkins,           icon: ClipboardList, color: 'text-brand-600' },
@@ -51,8 +63,9 @@ export default function Institution() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full mb-3">
-            <Shield size={12} /> Aggregated &amp; anonymized — no individual data shown
+            <Shield size={12} /> Trend insights aggregated · appointment details admin-only
           </div>
+          {error && <p role="alert" className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-5">{error}</p>}
           <h1 className="section-title mb-1">Student Well-being Insights</h1>
           <p className="text-calm-500 text-sm">Institutional-level overview of student well-being trends.</p>
         </div>
@@ -148,13 +161,45 @@ export default function Institution() {
         </div>
       </div>
 
+      <section className="card p-6 mb-6">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <h3 className="font-semibold text-calm-900">Counselling appointment requests</h3>
+            <p className="text-xs text-calm-400 mt-1">Private requests submitted by students for staff follow-up.</p>
+          </div>
+          <span className="badge bg-amber-50 text-amber-700">{appointments.filter(item => item.status === 'pending').length} pending</span>
+        </div>
+        {appointments.length === 0 ? (
+          <p className="text-sm text-calm-500 py-4">There are no appointment requests yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {appointments.map(item => (
+              <article key={item.id} className="rounded-xl border border-calm-100 p-4">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                  <div>
+                    <p className="text-sm font-semibold text-calm-900">{item.student_name} <span className="font-normal text-calm-500">· {item.student_email}</span></p>
+                    <p className="text-sm text-calm-700 mt-1">{item.counselor}</p>
+                  </div>
+                  <div className="sm:text-right">
+                    <p className="text-sm font-medium text-calm-800">{item.preferred_date}</p>
+                    <p className="text-xs text-calm-500">{item.preferred_time}</p>
+                  </div>
+                </div>
+                {item.message && <p className="text-sm text-calm-600 mt-3 whitespace-pre-wrap">{item.message}</p>}
+                <span className="badge bg-amber-50 text-amber-700 mt-3">{item.status}</span>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
       {/* Privacy notice */}
       <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl p-4">
         <Shield size={16} className="text-green-600 shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-green-800 mb-0.5">Privacy Notice</p>
           <p className="text-xs text-green-700 leading-relaxed">
-            All data shown is aggregated and anonymized. No individual student information is displayed or accessible through this dashboard. MindBridge does not store identifiable personal information.
+            Trend charts show aggregated insights. Appointment requests contain identifying details shared by the student and are visible only to the student and authorized administrators.
           </p>
         </div>
       </div>

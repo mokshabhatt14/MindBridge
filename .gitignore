@@ -18,6 +18,8 @@ pip-delete-this-directory.txt
 
 # FastAPI / uvicorn
 *.log
+backend/*.sqlite3
+backend/*.db
 
 # Node / React
 node_modules/

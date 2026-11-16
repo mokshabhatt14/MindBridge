@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import {
-  ClipboardList, MessageSquare, TrendingUp, HeartHandshake,
+  ClipboardList, MessageSquare, TrendingUp, HeartHandshake, CalendarClock,
   ArrowRight, Calendar, CheckCircle2
 } from 'lucide-react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
+import { useApp } from '../context/AppContext'
 
 const weeklyData = [
   { week: 'Wk 1', wellbeing: 3.1, stress: 3.8 },
@@ -31,6 +32,7 @@ const quickActions = [
   { label: 'Talk it Out',      to: '/express',  icon: MessageSquare, color: 'bg-teal-600 hover:bg-teal-700 text-white' },
   { label: 'View My Progress', to: '/progress', icon: TrendingUp,    color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
   { label: 'Support Resources',to: '/support',  icon: HeartHandshake,color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
+  { label: 'Request Appointment', to: '/appointments', icon: CalendarClock, color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
 ]
 
 const hour = new Date().getHours()
@@ -38,13 +40,14 @@ const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Go
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const { state } = useApp()
 
   return (
     <div className="page-container fade-in">
       {/* Greeting */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-calm-900 mb-1">
-          {greeting}, Student 👋
+          {greeting}, {state.session?.user?.name?.split(' ')[0] || 'Student'} 👋
         </h1>
         <p className="text-calm-500">Here's your well-being overview for today.</p>
       </div>
@@ -147,7 +150,7 @@ export default function Dashboard() {
       {/* Quick actions */}
       <div className="card p-5">
         <h3 className="font-semibold text-calm-900 mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {quickActions.map(a => (
             <button
               key={a.label}

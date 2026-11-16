@@ -9,9 +9,22 @@ const HEALTH_URL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/health`
   : '/health'
 
+function getSessionToken() {
+  try {
+    return JSON.parse(localStorage.getItem('mindbridge-session') || 'null')?.token
+  } catch {
+    return null
+  }
+}
+
 async function request(path, options = {}) {
+  const token = getSessionToken()
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.headers || {}),
+    },
     ...options,
   })
   if (!res.ok) {
@@ -34,4 +47,18 @@ export const api = {
     }),
 
   getTrends: () => request('/trends'),
+
+  studentSignup: (data) =>
+    request('/auth/student/signup', { method: 'POST', body: JSON.stringify(data) }),
+
+  studentLogin: (data) =>
+    request('/auth/student/login', { method: 'POST', body: JSON.stringify(data) }),
+
+  adminLogin: (data) =>
+    request('/auth/admin/login', { method: 'POST', body: JSON.stringify(data) }),
+
+  createAppointment: (data) =>
+    request('/appointments', { method: 'POST', body: JSON.stringify(data) }),
+
+  getAppointments: () => request('/appointments'),
 }

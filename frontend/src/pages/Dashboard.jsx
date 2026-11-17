@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import {
   ClipboardList, MessageSquare, TrendingUp, HeartHandshake, CalendarClock,
-  ArrowRight, Calendar, CheckCircle2
+  ArrowRight, Calendar, CheckCircle2, Music2, Compass
 } from 'lucide-react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -30,8 +30,9 @@ const supportCards = [
 const quickActions = [
   { label: 'Start Check-in',   to: '/checkin',  icon: ClipboardList, color: 'bg-brand-600 hover:bg-brand-700 text-white' },
   { label: 'Talk it Out',      to: '/express',  icon: MessageSquare, color: 'bg-teal-600 hover:bg-teal-700 text-white' },
-  { label: 'View My Progress', to: '/progress', icon: TrendingUp,    color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
+  { label: 'MindBridge Vibes', to: '/vibes', icon: Music2, color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
   { label: 'Support Resources',to: '/support',  icon: HeartHandshake,color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
+  { label: 'Campus Connect', to: '/campus-connect', icon: Compass, color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
   { label: 'Request Appointment', to: '/appointments', icon: CalendarClock, color: 'bg-white hover:bg-calm-50 text-calm-800 border border-calm-200' },
 ]
 
@@ -150,7 +151,7 @@ export default function Dashboard() {
       {/* Quick actions */}
       <div className="card p-5">
         <h3 className="font-semibold text-calm-900 mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {quickActions.map(a => (
             <button
               key={a.label}

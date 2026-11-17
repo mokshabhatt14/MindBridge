@@ -9,6 +9,8 @@ import CheckIn from './pages/CheckIn'
 import Express from './pages/Express'
 import Analysis from './pages/Analysis'
 import Support from './pages/Support'
+import MindbridgeVibes from './pages/MindbridgeVibes'
+import CampusConnect from './pages/CampusConnect'
 import Progress from './pages/Progress'
 import Institution from './pages/Institution'
 import { AppProvider } from './context/AppContext'
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/express" element={<Express />} />
             <Route path="/analysis" element={<Analysis />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/vibes" element={<MindbridgeVibes />} />
+            <Route path="/campus-connect" element={<CampusConnect />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/appointments" element={<AppointmentRequest />} />
           </Route>

@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, ClipboardList, MessageSquare, TrendingUp,
-  HeartHandshake, CalendarClock, Menu, X, Activity, LogOut
+  HeartHandshake, CalendarClock, Menu, X, Activity, LogOut,
+  Music2, Compass
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
@@ -12,6 +13,8 @@ const studentNav = [
   { to: '/express',   icon: MessageSquare,   label: 'Express Yourself' },
   { to: '/progress',  icon: TrendingUp,      label: 'My Progress' },
   { to: '/support',   icon: HeartHandshake,  label: 'Support' },
+  { to: '/vibes',     icon: Music2,          label: 'MindBridge Vibes' },
+  { to: '/campus-connect', icon: Compass,      label: 'Campus Connect' },
   { to: '/appointments', icon: CalendarClock, label: 'Appointments' },
 ]
 

@@ -24,6 +24,15 @@ const LEVEL_BAR = {
 
 const LEVEL_PCT = { Low: 30, Moderate: 60, High: 90 }
 
+function getSupportTarget(recommendation) {
+  const text = recommendation.toLowerCase()
+  if (text.includes('self-help') || text.includes('self help')) return 'self-help'
+  if (text.includes('peer')) return 'peer'
+  if (text.includes('academic') || text.includes('mentoring') || text.includes('study') || text.includes('time-management') || text.includes('time management')) return 'academic'
+  if (text.includes('professional') || text.includes('counselling') || text.includes('counseling') || text.includes('therapy')) return 'professional'
+  return 'self-help'
+}
+
 export default function Analysis() {
   const navigate = useNavigate()
   const { state } = useApp()
@@ -137,9 +146,18 @@ export default function Analysis() {
             <p className="text-xs font-semibold text-calm-400 uppercase tracking-wider mb-3">Recommended Support</p>
             <ul className="space-y-2">
               {(result.recommendations || []).map(rec => (
-                <li key={rec} className="flex items-center gap-2.5 text-sm text-calm-800">
-                  <CheckCircle2 size={15} className="text-brand-500 shrink-0" />
-                  {rec}
+                <li key={rec}>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/support?category=${getSupportTarget(rec)}`)}
+                    className="flex w-full items-center justify-between gap-2.5 rounded-xl border border-calm-200 bg-calm-50 px-3 py-2 text-left text-sm text-calm-800 transition-colors hover:border-brand-200 hover:bg-brand-50"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-brand-500 shrink-0" />
+                      {rec}
+                    </span>
+                    <ArrowRight size={15} className="text-calm-400" />
+                  </button>
                 </li>
               ))}
             </ul>

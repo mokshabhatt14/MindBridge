@@ -2,6 +2,8 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts'
 import { TrendingUp, TrendingDown, Minus, Shield } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { api } from '../lib/api'
 
 const demoWeekly = [
   { week: 'Week 1', academic_stress: 4.0, wellbeing: 3.1, checkins: 2 },
@@ -19,6 +21,13 @@ function Trend({ val, prev }) {
 export default function Progress() {
   const latest = demoWeekly[demoWeekly.length - 1]
   const prev    = demoWeekly[demoWeekly.length - 2]
+  const [checkins, setCheckins] = useState([])
+
+  useEffect(() => {
+    api.getCheckIns()
+      .then(data => setCheckins(data.checkins || []))
+      .catch(() => setCheckins([]))
+  }, [])
 
   return (
     <div className="page-container">
@@ -107,6 +116,27 @@ export default function Progress() {
           ))}
         </div>
       </div>
+
+      {checkins.length > 0 && (
+        <div className="card p-6 mb-6">
+          <h3 className="font-semibold text-calm-900 mb-4">Your Recent Check-ins</h3>
+          <div className="space-y-3">
+            {checkins.slice(0, 5).map(checkin => (
+              <div key={checkin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-calm-200 bg-calm-50 px-4 py-3">
+                <div>
+                  <p className="text-sm font-semibold text-calm-900">{checkin.mood || 'Well-being check-in'}</p>
+                  <p className="text-xs text-calm-500 mt-0.5">
+                    Overall {Number(checkin.overall).toFixed(0)} / 5 · Sleep {Number(checkin.sleep).toFixed(0)} / 5
+                  </p>
+                </div>
+                <p className="text-xs text-calm-400">
+                  {new Date(checkin.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Disclaimer */}
       <div className="flex items-start gap-3 bg-calm-50 border border-calm-200 rounded-xl p-4">

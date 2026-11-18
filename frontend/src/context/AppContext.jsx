@@ -1,13 +1,21 @@
-import { createContext, useContext, useReducer, useCallback } from 'react'
+import { createContext, useContext, useReducer, useCallback, useEffect } from 'react'
 
 const AppContext = createContext(null)
 
 const initialState = {
-  assessment: {},
-  expressText: '',
-  analysisResult: null,
+  assessment: readStoredJson('mindbridge-assessment', {}),
+  expressText: localStorage.getItem('mindbridge-express-text') || '',
+  analysisResult: readStoredJson('mindbridge-analysis', null),
   toast: null,
   session: readStoredSession(),
+}
+
+function readStoredJson(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback
+  } catch {
+    return fallback
+  }
 }
 
 function readStoredSession() {
@@ -33,7 +41,7 @@ function reducer(state, action) {
     case 'SET_SESSION':
       return { ...state, session: action.payload }
     case 'CLEAR_SESSION':
-      return { ...state, session: null }
+      return { ...state, session: null, assessment: {}, expressText: '', analysisResult: null }
     default:
       return state
   }
@@ -41,6 +49,20 @@ function reducer(state, action) {
 
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  useEffect(() => {
+    localStorage.setItem('mindbridge-assessment', JSON.stringify(state.assessment))
+  }, [state.assessment])
+
+  useEffect(() => {
+    localStorage.setItem('mindbridge-express-text', state.expressText)
+  }, [state.expressText])
+
+  useEffect(() => {
+    if (state.analysisResult) {
+      localStorage.setItem('mindbridge-analysis', JSON.stringify(state.analysisResult))
+    }
+  }, [state.analysisResult])
 
   const showToast = useCallback((message, type = 'info') => {
     dispatch({ type: 'SHOW_TOAST', payload: { message, type } })
@@ -54,6 +76,9 @@ export function AppProvider({ children }) {
 
   const signOut = useCallback(() => {
     localStorage.removeItem('mindbridge-session')
+    localStorage.removeItem('mindbridge-assessment')
+    localStorage.removeItem('mindbridge-express-text')
+    localStorage.removeItem('mindbridge-analysis')
     dispatch({ type: 'CLEAR_SESSION' })
   }, [])
 

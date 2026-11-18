@@ -52,6 +52,26 @@ def initialize_database():
                 created_at TEXT NOT NULL,
                 FOREIGN KEY(student_id) REFERENCES students(id)
             );
+            CREATE TABLE IF NOT EXISTS checkins (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                student_id INTEGER NOT NULL REFERENCES students(id),
+                mood TEXT NOT NULL DEFAULT '',
+                mood_score REAL NOT NULL DEFAULT 3,
+                overwhelm REAL NOT NULL DEFAULT 3,
+                concentration REAL NOT NULL DEFAULT 3,
+                connection REAL NOT NULL DEFAULT 3,
+                sleep REAL NOT NULL DEFAULT 3,
+                overall REAL NOT NULL DEFAULT 3,
+                note TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL,
+                FOREIGN KEY(student_id) REFERENCES students(id)
+            );
+            CREATE TABLE IF NOT EXISTS music_preferences (
+                student_id INTEGER PRIMARY KEY REFERENCES students(id),
+                languages TEXT NOT NULL DEFAULT 'Any',
+                genres TEXT NOT NULL DEFAULT 'Any',
+                updated_at TEXT NOT NULL
+            );
             """
         )
         conn.execute(

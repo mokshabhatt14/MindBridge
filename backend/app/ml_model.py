@@ -19,7 +19,7 @@ def compute_support_level(assessment: dict) -> dict:
     Higher score = more positive (better well-being).
     Support level: Low | Moderate | High
     """
-    keys = ["mood", "overwhelm", "concentration", "connection", "overall"]
+    keys = ["mood", "overwhelm", "concentration", "connection", "sleep", "overall"]
 
     # Provide defaults for missing keys
     values = []

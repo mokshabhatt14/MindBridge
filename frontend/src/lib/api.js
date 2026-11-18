@@ -40,6 +40,8 @@ export const api = {
   submitCheckIn: (data) =>
     request('/checkin', { method: 'POST', body: JSON.stringify(data) }),
 
+  getCheckIns: () => request('/checkins'),
+
   analyze: (text, assessment) =>
     request('/analyze', {
       method: 'POST',
@@ -61,4 +63,12 @@ export const api = {
     request('/appointments', { method: 'POST', body: JSON.stringify(data) }),
 
   getAppointments: () => request('/appointments'),
+
+  getMusicPreferences: () => request('/music/preferences'),
+
+  saveMusicPreferences: (data) =>
+    request('/music/preferences', { method: 'PUT', body: JSON.stringify(data) }),
+
+  getMusicRecommendations: (data) =>
+    request('/music/recommendations', { method: 'POST', body: JSON.stringify(data) }),
 }

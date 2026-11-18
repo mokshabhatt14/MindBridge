@@ -8,14 +8,17 @@ from pydantic import BaseModel, Field
 from typing import Optional
 import datetime
 import hmac
+import json
 import os
 import re
 import sqlite3
+from typing import List
 
 from app.nlp import classify_text
 from app.ml_model import compute_support_level
 from app.auth import create_token, hash_password, read_token, verify_password
 from app.database import connection, initialize_database
+from app.music import LANGUAGES, recommend
 
 app = FastAPI(
     title="MindBridge API",
@@ -43,6 +46,10 @@ class CheckInRequest(BaseModel):
     concentration: Optional[float] = 3
     connection: Optional[float] = 3
     overall: Optional[float] = 3
+    mood_label: Optional[str] = ""
+    sleep: Optional[float] = 3
+    social_support: Optional[float] = 3
+    note: Optional[str] = Field(default="", max_length=2000)
 
 
 class AnalyzeRequest(BaseModel):
@@ -71,6 +78,18 @@ class AppointmentRequest(BaseModel):
     preferred_date: str
     preferred_time: str = Field(min_length=1, max_length=40)
     message: str = Field(default="", max_length=2000)
+
+
+class MusicPreferencesRequest(BaseModel):
+    languages: List[str] = Field(default_factory=lambda: ["Any"])
+    genres: List[str] = Field(default_factory=lambda: ["Any"])
+
+
+class MusicRecommendationsRequest(BaseModel):
+    mood: Optional[str] = ""
+    languages: List[str] = Field(default_factory=lambda: ["Any"])
+    limit: int = Field(default=6, ge=1, le=12)
+    surprise: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -173,6 +192,26 @@ def admin_login(data: AdminLoginRequest):
 def checkin(data: CheckInRequest, user=Depends(require_role("student"))):
     assessment = data.model_dump()
     ml_result = compute_support_level(assessment)
+    mood_label = assessment.get("mood_label", "").strip()
+    with connection() as conn:
+        conn.execute(
+            """INSERT INTO checkins
+               (student_id, mood, mood_score, overwhelm, concentration, connection,
+                sleep, overall, note, created_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                int(user["sub"]),
+                mood_label,
+                float(assessment.get("mood", 3)),
+                float(assessment.get("overwhelm", 3)),
+                float(assessment.get("concentration", 3)),
+                float(assessment.get("connection", 3)),
+                float(assessment.get("sleep", 3)),
+                float(assessment.get("overall", 3)),
+                assessment.get("note", "").strip(),
+                datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            ),
+        )
     return {
         "received": assessment,
         **ml_result,
@@ -180,6 +219,18 @@ def checkin(data: CheckInRequest, user=Depends(require_role("student"))):
         "disclaimer": "MindBridge does not diagnose mental-health conditions. "
                       "Your responses suggest areas that may benefit from support.",
     }
+
+
+@app.get("/api/checkins")
+def list_checkins(user=Depends(require_role("student"))):
+    with connection() as conn:
+        rows = conn.execute(
+            """SELECT id, mood, mood_score, overwhelm, concentration, connection,
+                      sleep, overall, note, created_at
+               FROM checkins WHERE student_id = ? ORDER BY created_at DESC LIMIT 20""",
+            (int(user["sub"]),),
+        ).fetchall()
+    return {"checkins": [dict(row) for row in rows]}
 
 
 @app.post("/api/analyze")
@@ -219,8 +270,84 @@ def analyze(data: AnalyzeRequest, user=Depends(require_role("student"))):
         "well_being_score": ml_result["well_being_score"],
         "description": ml_result["description"],
         "recommendations": merged_recs[:6],
+        "mood_overview": assessment.get("mood_label", "") or "Current emotional state",
+        "strengths": [
+            "You took time to reflect on how you are doing.",
+            *(
+                ["Your sleep and energy responses indicate a steady area."]
+                if float(assessment.get("sleep", 3) or 3) >= 3
+                else []
+            ),
+            *(
+                ["Your social connection response suggests support may already be available."]
+                if float(assessment.get("social_support", assessment.get("connection", 3)) or 3) >= 3
+                else []
+            ),
+        ],
+        "support_areas": [
+            "Academic pressure" if float(assessment.get("overwhelm", 3) or 3) >= 4 else None,
+            "Rest and energy" if float(assessment.get("sleep", 3) or 3) <= 2 else None,
+            "Social connection" if float(assessment.get("social_support", assessment.get("connection", 3)) or 3) <= 2 else None,
+        ],
         "disclaimer": "Your responses suggest areas that may benefit from support. "
                       "MindBridge does not diagnose mental-health conditions.",
+    }
+
+
+@app.put("/api/music/preferences")
+def save_music_preferences(
+    data: MusicPreferencesRequest,
+    user=Depends(require_role("student")),
+):
+    languages = [language for language in data.languages if language in LANGUAGES]
+    genres = data.genres[:20]
+    with connection() as conn:
+        conn.execute(
+            """INSERT INTO music_preferences (student_id, languages, genres, updated_at)
+               VALUES (?, ?, ?, ?)
+               ON CONFLICT(student_id) DO UPDATE SET
+                 languages = excluded.languages,
+                 genres = excluded.genres,
+                 updated_at = excluded.updated_at""",
+            (
+                int(user["sub"]),
+                json.dumps(languages or ["Any"]),
+                json.dumps(genres or ["Any"]),
+                datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            ),
+        )
+    return {"languages": languages or ["Any"], "genres": genres or ["Any"]}
+
+
+@app.get("/api/music/preferences")
+def get_music_preferences(user=Depends(require_role("student"))):
+    with connection() as conn:
+        row = conn.execute(
+            "SELECT languages, genres FROM music_preferences WHERE student_id = ?",
+            (int(user["sub"]),),
+        ).fetchone()
+    if row is None:
+        return {"languages": ["Any"], "genres": ["Any"]}
+    try:
+        languages = json.loads(row["languages"])
+        genres = json.loads(row["genres"])
+    except (TypeError, json.JSONDecodeError):
+        languages, genres = ["Any"], ["Any"]
+    return {"languages": languages, "genres": genres}
+
+
+@app.post("/api/music/recommendations")
+def music_recommendations(
+    data: MusicRecommendationsRequest,
+    user=Depends(require_role("student")),
+):
+    return {
+        "recommendations": recommend(
+            mood=data.mood,
+            languages=data.languages,
+            limit=data.limit,
+            surprise=data.surprise,
+        )
     }
 
 

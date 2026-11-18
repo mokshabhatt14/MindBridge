@@ -54,6 +54,48 @@ CATALOG = [
     {"title": "Gurenge", "artist": "LiSA", "language": "Japanese", "moods": ["motivated", "tired", "overwhelmed"], "genre": "Anime Rock", "reason": "Powerful momentum for when you need to take the next step."},
     {"title": "Dernière danse", "artist": "Indila", "language": "French", "moods": ["sad", "lonely", "hopeful"], "genre": "Pop", "reason": "Atmospheric music that validates melancholy while holding onto motion."},
     {"title": "On écrit sur les murs", "artist": "Kids United", "language": "French", "moods": ["motivated", "hopeful", "happy"], "genre": "Pop", "reason": "Collective, uplifting energy about creating change together."},
+    {"title": "Raabta", "artist": "Arijit Singh", "language": "Hindi", "moods": ["lonely", "hopeful", "calm"], "genre": "Romantic", "reason": "A warm melody that can bring a sense of connection and belonging."},
+    {"title": "Ishq Bulaava", "artist": "Sanam Puri, Shipra Goyal", "language": "Hindi", "moods": ["happy", "excited", "hopeful"], "genre": "Pop", "reason": "A bright song for a happy moment or a hopeful fresh start."},
+    {"title": "Kar Har Maidaan Fateh", "artist": "Sukhwinder Singh, Shreya Ghoshal", "language": "Hindi", "moods": ["motivated", "stressed", "overwhelmed"], "genre": "Motivational", "reason": "Powerful encouragement for a demanding academic or personal goal."},
+    {"title": "Give Me Some Sunshine", "artist": "Suraj Jagan, Sharman Joshi", "language": "Hindi", "moods": ["tired", "sad", "stressed"], "genre": "Acoustic", "reason": "Gentle, honest music for moments when the load feels heavy."},
+    {"title": "Ocean", "artist": "Shigga Shay", "language": "Kannada", "moods": ["tired", "calm", "peaceful"], "genre": "Ambient", "reason": "A soothing soundscape for slowing down and recovering."},
+    {"title": "Kanasugara", "artist": "Rajesh Krishnan", "language": "Kannada", "moods": ["peaceful", "calm", "hopeful"], "genre": "Melody", "reason": "Soft traditional melody for a quiet, peaceful pause."},
+    {"title": "Ninna Poojege Bande Mahadeshwara", "artist": "V. Harikrishna", "language": "Kannada", "moods": ["anxious", "stressed", "calm"], "genre": "Devotional", "reason": "A steady devotional track for a calmer moment."},
+    {"title": "Butta Bomma", "artist": "Armaan Malik", "language": "Telugu", "moods": ["happy", "excited", "motivated"], "genre": "Dance", "reason": "Energetic rhythm that matches a cheerful, confident mood."},
+    {"title": "Nijanga Nenena", "artist": "Anurag Kulkarni", "language": "Telugu", "moods": ["peaceful", "calm", "tired"], "genre": "Melody", "reason": "Gentle music for rest, reflection and emotional recovery."},
+    {"title": "Pillaa Raa", "artist": "Anurag Kulkarni", "language": "Telugu", "moods": ["lonely", "sad", "hopeful"], "genre": "Acoustic", "reason": "A heartfelt song that understands loneliness without rushing you."},
+    {"title": "High on Love", "artist": "Sid Sriram", "language": "Tamil", "moods": ["happy", "excited", "hopeful"], "genre": "Pop", "reason": "Warm, uplifting energy for a bright and connected mood."},
+    {"title": "Anbe Sivam", "artist": "S. P. Balasubrahmanyam", "language": "Tamil", "moods": ["peaceful", "calm", "hopeful"], "genre": "Devotional", "reason": "A comforting classic that encourages kindness and inner calm."},
+    {"title": "Ava Enna", "artist": "Vishal Dadlani", "language": "Tamil", "moods": ["tired", "sad", "lonely"], "genre": "Melody", "reason": "Reflective music for a low-energy moment that needs understanding."},
+    {"title": "Kaattu Payale", "artist": "Dhee, Arivu", "language": "Tamil", "moods": ["motivated", "excited", "hopeful"], "genre": "Folk Pop", "reason": "Rhythmic momentum for confidence and determination."},
+    {"title": "Malare", "artist": "Vijay Yesudas", "language": "Malayalam", "moods": ["peaceful", "calm", "happy"], "genre": "Melody", "reason": "An easygoing melody for a quiet, positive moment."},
+    {"title": "Uyire", "artist": "Gowry Lekshmi", "language": "Malayalam", "moods": ["lonely", "sad", "hopeful"], "genre": "Acoustic", "reason": "Soft, intimate vocals for days that feel emotionally distant."},
+    {"title": "Neela Nilave", "artist": "Vijay Yesudas", "language": "Malayalam", "moods": ["anxious", "stressed", "tired"], "genre": "Melody", "reason": "Gentle music that gives tired thoughts a place to rest."},
+    {"title": "Phire Esho", "artist": "Anupam Roy", "language": "Bengali", "moods": ["lonely", "sad", "hopeful"], "genre": "Acoustic", "reason": "An intimate song for reflection and a wish to reconnect."},
+    {"title": "Tomake Chai", "artist": "Arijit Singh", "language": "Bengali", "moods": ["peaceful", "calm", "lonely"], "genre": "Melody", "reason": "Warm melody for a quiet moment of longing or reflection."},
+    {"title": "Teri Mitti", "artist": "B Praak", "language": "Hindi", "moods": ["motivated", "hopeful", "tired"], "genre": "Patriotic", "reason": "Strong emotional energy for recommitting to what matters."},
+    {"title": "Kunware", "artist": "Prateek Kuhad", "language": "Hindi", "moods": ["lonely", "sad", "peaceful"], "genre": "Indie", "reason": "Minimal indie music that feels honest and companionable."},
+    {"title": "Dil Se Re", "artist": "A.R. Rahman", "language": "Hindi", "moods": ["excited", "motivated", "hopeful"], "genre": "Rock", "reason": "Expansive energy for a bold and motivated state."},
+    {"title": "Kabira", "artist": "Tochi Raina, Rekha Bhardwaj", "language": "Hindi", "moods": ["calm", "peaceful", "hopeful"], "genre": "Acoustic", "reason": "Reflective folk-pop for slowing down and finding perspective."},
+    {"title": "Masakali", "artist": "Mohit Chauhan", "language": "Hindi", "moods": ["happy", "excited", "calm"], "genre": "Pop", "reason": "Light rhythm and open energy for a free, cheerful moment."},
+    {"title": "Ek Tarfa", "artist": "Darshan Raval", "language": "Hindi", "moods": ["sad", "lonely", "tired"], "genre": "Melody", "reason": "A sincere emotional song for a low or lonely afternoon."},
+    {"title": "Aararo", "artist": "Hariharan", "language": "Tamil", "moods": ["peaceful", "calm", "tired"], "genre": "Lullaby", "reason": "Gentle, restful music for recovery and quiet."},
+    {"title": "Bole Chudiyan", "artist": "Udit Narayan, Sonu Nigam, Alka Yagnik", "language": "Hindi", "moods": ["happy", "excited", "hopeful"], "genre": "Bollywood", "reason": "A familiar celebratory track for joy and togetherness."},
+    {"title": "Naatu Naatu", "artist": "Rahul Sipligunj, Kaala Bhairava", "language": "Telugu", "moods": ["excited", "happy", "motivated"], "genre": "Dance", "reason": "Fast, playful energy for movement and a positive reset."},
+    {"title": "Suvvi Suvvalamma", "artist": "Mano, S. P. Balasubrahmanyam", "language": "Telugu", "moods": ["peaceful", "calm", "happy"], "genre": "Folk", "reason": "Warm traditional rhythm for comfort and ease."},
+    {"title": "Adiye", "artist": "Kapil Kapilan", "language": "Tamil", "moods": ["lonely", "sad", "peaceful"], "genre": "Melody", "reason": "Soft Tamil pop for quiet emotional reflection."},
+    {"title": "Suttum Vizhi", "artist": "Vijay, Karthik", "language": "Tamil", "moods": ["motivated", "excited", "hopeful"], "genre": "Dance", "reason": "Bright energy for a confident, forward-moving mood."},
+    {"title": "Onakkaga", "artist": "Chinmayi, Pradeep Kumar", "language": "Malayalam", "moods": ["peaceful", "calm", "hopeful"], "genre": "Melody", "reason": "A gentle melody for stillness and emotional clarity."},
+    {"title": "Lutt Putt Gaya", "artist": "Arijit Singh", "language": "Hindi", "moods": ["happy", "excited", "hopeful"], "genre": "Pop", "reason": "Easygoing upbeat music for feeling lighter."},
+    {"title": "Shiv Kailasho Ke Vasi", "artist": "Hansraj Raghuwanshi", "language": "Hindi", "moods": ["anxious", "stressed", "peaceful"], "genre": "Devotional", "reason": "Calming devotional sound for grounding an anxious moment."},
+    {"title": "Jaan'nisar", "artist": "Arijit Singh", "language": "Hindi", "moods": ["sad", "lonely", "tired"], "genre": "Romantic", "reason": "Deep, emotional music for a private reflective moment."},
+    {"title": "Blinding Lights", "artist": "The Weeknd", "language": "English", "moods": ["happy", "excited", "motivated"], "genre": "Synth Pop", "reason": "Fast synth-pop energy for movement and excitement."},
+    {"title": "Lovely", "artist": "Billie Eilish, Khalid", "language": "English", "moods": ["sad", "lonely", "tired"], "genre": "Alternative", "reason": "A soft song that makes space for difficult feelings."},
+    {"title": "Someone You Loved", "artist": "Lewis Capaldi", "language": "English", "moods": ["sad", "lonely", "anxious"], "genre": "Pop", "reason": "Emotionally honest music for connection during sadness."},
+    {"title": "Flowers", "artist": "Miley Cyrus", "language": "English", "moods": ["motivated", "hopeful", "happy"], "genre": "Pop", "reason": "Uplifting pop for reclaiming confidence and optimism."},
+    {"title": "Golden", "artist": "Jungkook", "language": "Korean", "moods": ["motivated", "happy", "excited"], "genre": "K-Pop", "reason": "Bright, energetic pop for a productive or cheerful mood."},
+    {"title": "Spring Day", "artist": "BTS", "language": "Korean", "moods": ["sad", "lonely", "hopeful"], "genre": "K-Pop", "reason": "Reflective pop with a gentle message that difficult seasons can change."},
+    {"title": "Blue", "artist": "Yung Kai", "language": "English", "moods": ["calm", "sad", "lonely"], "genre": "Indie", "reason": "Gentle indie pop for quiet, emotionally tender moments."},
 ]
 
 
@@ -67,6 +109,12 @@ def youtube_search_url(title, artist):
 
 def recommend(mood=None, languages=None, limit=6, surprise=False):
     normalized_mood = (mood or "").strip().lower()
+    mood_aliases = {
+        "peaceful": "calm",
+        "exhausted": "tired",
+        "okay": "calm",
+    }
+    normalized_mood = mood_aliases.get(normalized_mood, normalized_mood)
     normalized_languages = {item.strip() for item in (languages or []) if item.strip()}
     if "Any" in normalized_languages:
         normalized_languages = set()
@@ -77,7 +125,7 @@ def recommend(mood=None, languages=None, limit=6, surprise=False):
         and (not normalized_languages or item["language"] in normalized_languages)
     ]
 
-    if surprise or not matching:
+    if not matching:
         matching = [
             item for item in CATALOG
             if not normalized_languages or item["language"] in normalized_languages
@@ -87,6 +135,28 @@ def recommend(mood=None, languages=None, limit=6, surprise=False):
         random.shuffle(matching)
     else:
         matching = sorted(matching, key=lambda item: item["moods"].index(normalized_mood) if normalized_mood in item["moods"] else 99)
+
+    selected_titles = {item["title"] for item in matching}
+    if len(matching) < limit:
+        language_pool = [
+            item for item in CATALOG
+            if (not normalized_languages or item["language"] in normalized_languages)
+            and item["title"] not in selected_titles
+        ]
+        for item in language_pool:
+            matching.append(item)
+            selected_titles.add(item["title"])
+            if len(matching) >= limit:
+                break
+    if len(matching) < limit:
+        for item in CATALOG:
+            if item["title"] not in selected_titles:
+                matching.append(item)
+                selected_titles.add(item["title"])
+                if len(matching) >= limit:
+                    break
+    if surprise:
+        random.shuffle(matching)
 
     selected = matching[:limit]
     return [

@@ -14,11 +14,15 @@ import re
 import sqlite3
 from typing import List
 
+from dotenv import load_dotenv
+
 from app.nlp import classify_text
 from app.ml_model import compute_support_level
 from app.auth import create_token, hash_password, read_token, verify_password
 from app.database import connection, initialize_database
 from app.music import LANGUAGES, recommend
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 app = FastAPI(
     title="MindBridge API",

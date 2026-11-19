@@ -113,8 +113,6 @@ MindBridge/
 ```bash
 cd backend
 pip install -r requirements.txt
-set MINDBRIDGE_ADMIN_EMAIL=admin@example.edu
-set MINDBRIDGE_ADMIN_PASSWORD=replace-with-a-long-password
 uvicorn app.main:app --reload
 ```
 
@@ -122,7 +120,7 @@ Backend runs at: **http://localhost:8000**
 
 API docs available at: **http://localhost:8000/docs**
 
-The admin account is configured on the server and is separate from student sign-up. Set `MINDBRIDGE_ADMIN_EMAIL` and `MINDBRIDGE_ADMIN_PASSWORD` in the Render service environment before using the admin login. Student accounts and appointment requests are stored in SQLite; set `MINDBRIDGE_DB_PATH` to a persistent disk path in deployments where data must survive service replacement (the default Render filesystem is ephemeral).
+For local development, the backend loads `backend/.env` if present. Set `MINDBRIDGE_ADMIN_EMAIL` and `MINDBRIDGE_ADMIN_PASSWORD` there to configure the admin login; operating-system environment variables take precedence. In deployments, configure these variables in the hosting service (for example, Render's environment settings) rather than committing a `.env` file. Student accounts and appointment requests are stored in SQLite; set `MINDBRIDGE_DB_PATH` to a persistent disk path in deployments where data must survive service replacement (the default Render filesystem is ephemeral).
 
 ### Frontend
 
